@@ -1,2 +1,4 @@
 image: quay.io/tedward/alpine-etcdctl:0.0.4
-schedule: 20 * * * *
+schedule: 52 * * * *
+selector: k8s_controller
+selectorval: "true"
