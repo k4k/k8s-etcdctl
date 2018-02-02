@@ -16,6 +16,8 @@ spec:
       activeDeadlineSeconds: {{ .Values.deadline }}
       template:
         spec:
+          nodeSelector:
+            {{ .Values.selector }}: {{ .Values.selectorval }}
           restartPolicy: Never
           containers:
           - name: {{ .Chart.Name }}
@@ -43,5 +45,3 @@ spec:
             - hostPath:
                 path: /etc/kubernetes/pki
               name: pki
-        nodeSelector:
-          k8s_controller: "true"
