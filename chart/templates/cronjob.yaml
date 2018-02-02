@@ -22,6 +22,8 @@ spec:
             image: {{ .Values.image }}
             command: 
               - /bin/etcdctl-wrapper
+            args:
+              - defrag
             env:
               - name: NODE_IP
                 valueFrom:
@@ -41,3 +43,5 @@ spec:
             - hostPath:
                 path: /etc/kubernetes/pki
               name: pki
+        nodeSelector:
+          k8s_controller: "true"
