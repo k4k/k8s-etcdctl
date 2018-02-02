@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/bin/etcdctl --endpoints=https://"${NODE_IP}":2379 --cacert=/etc/kubernetes/pki/ca.pem --cert=/etc/kubernetes/pki/"${NODE_NAME}".pem --key=/etc/kubernetes/pki/"${NODE_NAME}"-key.pem "$@"

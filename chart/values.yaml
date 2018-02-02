@@ -1,0 +1,2 @@
+image: quay.io/tedward/alpine-etcdctl:latest
+schedule: 1 * * * *

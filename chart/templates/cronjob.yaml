@@ -1,0 +1,43 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{ .Chart.Name }}
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 7
+  schedule: {{ .Values.schedule }}
+  successfulJobsHistoryLimit: 30 #Retain effectively 30 days of history
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: {{ .Values.deadline }}
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: {{ .Chart.Name }}
+            image: {{ .Values.image }}
+            command: 
+              - /bin/etcdctl-wrapper
+            env:
+              - name: NODE_IP
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.hostIP
+              - name: NODE_NAME
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+              - name: ETCDCTL_API
+                value: "3"
+            volumeMounts:
+              - mountPath: /etc/kubernetes/pki
+                name: pki
+                readOnly: true
+          volumes:
+            - hostPath:
+                path: /etc/kubernetes/pki
+              name: pki
